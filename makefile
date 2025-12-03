@@ -1,0 +1,28 @@
+# -------------- Install dependencies --------------
+install:
+	@echo Install the dependencies with uv and pre commit...
+	$ uv sync
+	$ uv run pre-commit install	
+
+update:
+	@echo Updating all dependencies of the environment...
+	$ uv lock --upgrade
+	$ uv sync
+
+# ------------------ Formating ---------------------
+lint:
+	@echo Check with ruff...
+	$ uv run ruff check .
+
+format:
+	@echo Format with Ruff...
+	$ uv run ruff format .
+
+fix:
+	@echo Fix with Ruff...
+	$ uv run ruff check --fix .
+
+# ------------------ Pre-commit ---------------------
+precommit:
+	@echo Run pre-commit...
+	$ uv run pre-commit run --all-files

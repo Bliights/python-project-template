@@ -1,0 +1,18 @@
+{  
+  // Active Ruff
+  "ruff.enable": true,
+
+  // Format le code à chaque sauvegarde
+  "editor.formatOnSave": true,
+
+  "ruff.configuration": "${workspaceFolder}/pyproject.toml",
+  "ruff.interpreter": [
+    "${workspaceFolder}/.venv/Scripts/python.exe"
+  ],
+  // Applique les corrections automatiques (comme pre-commit --fix)
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "always"
+  },
+  // Utilise ta config du projet
+  "ruff.organizeImports": true,
+}
