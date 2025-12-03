@@ -1,0 +1,27 @@
+fail_fast: true
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.14.2
+    hooks:
+      - id: ruff
+        name: "Ruff linter"
+        args: [
+          "--fix",
+          "--exit-non-zero-on-fix",
+          "--config=pyproject.toml",
+        ]
+        files: \.(py|ipynb)$
+
+      - id: ruff-format
+        name: "Ruff formatter"
+        args: [--config=pyproject.toml]
+        files: \.(py|ipynb)$
+
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 0.9.6
+    hooks:
+      - id: uv-lock
+        name: "Ensure uv.lock is up to date"
+
+      - id: uv-export
+        name: "Create the requirements.txt file"

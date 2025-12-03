@@ -1,0 +1,75 @@
+[project]
+name = "project_name"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = []
+
+[dependency-groups]
+dev = [
+  "pre-commit>=4.4.0",
+  "ruff>=0.14.5",
+]
+
+[tool.ruff]
+line-length = 100
+indent-width = 4
+respect-gitignore = true
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+docstring-code-format = true
+skip-magic-trailing-comma = false
+
+[tool.ruff.lint]
+select = [
+  "ANN",      # Force type annotation
+  "A",        # Check naming is compatible with python
+  "C4",       # Enforces Pythonic comprehensions (list, dict, set) and forbids inefficient map()/filter() or redundant collection calls
+  "FA",       # Enforces the "from __future__ import annotations"
+  "ISC",      # Enforces a consistent style for implicit string concatenation
+  "PIE",      # Simplifies common Python constructs
+  "PT",       # Enforces consistent conventions and best practices for writing clean and reliable pytest test
+  "Q",        # Enforces a strict, consistent quote style
+  "RSE",      # Removes unnecessary parentheses when raising an exception without arguments
+  "RET",      # Enforces explicit returns
+  "SIM",      # Simplifies complex expressions
+  # "SLOT",     # Enforces the use of "__slots__" on subclasses of immutable built-ins (str, tuple) to reduce memory consumption and potentially improve attribute access speed
+  "TC",       # Optimizes runtime performance by enforcing that imports used only for type annotations are moved into a "if typing.TYPE_CHECKING:" block
+  "ARG",      # Check for unused arguments
+  "FLY",      # Check for str.join calls that can be replaced with f-strings
+  "I",        # Enforces import sorting and grouping according to standard Python
+  "N",        # Enforces all standard PEP 8 naming conventions
+  "PERF",     # Enforces rules to prevent common Python performance pitfalls
+  "E", "W",   # Enforces adherence to the PEP 8
+  "F",        # Activates all Pyflakes rules
+  "PLC",      # Enforces Pylint's Convention rules for best practices
+  "UP",       # Enforces modern Python syntax
+
+  "B006",     # No mutable data structures for argument defaults
+  "B007",     # Check unused variable in loop
+  "B008",     # Checks for function calls in default function arguments
+  "B012",     # Checks for break, continue, and return statements in finally blocks.
+  "B015",     # Check for useless comparison
+  "B018",     # Found useless expression
+  "B024",     # Checks for abstract base classes that have no abstract methods
+  "COM812",   # Requires a trailing comma in multi-line lists
+  "FIX001",   # Checks for generic fixme comments
+  "ICN001",   # Enforces consistent import aliases  
+  "LOG001",   # Requires using logging.getLogger() instead of direct Logger instantiation
+  "LOG002",   # Enforces using __name__ with logging.getLogger() for proper logger hierarchy
+  "TID252",   # Prefer absolute imports over relative imports from parent modules	
+]
+
+ignore = [
+  "ANN002",   # No need to force type on args
+  "ANN003",   # No need to force type on kwargs
+  "ISC001",   # Disabled to avoid conflicts with the formatter
+  "SIM105",   # Explicitly prefer "try-except-pass" blocks over "contextlib.suppress"
+  "TC006",	  # No need to add quotes to type expression in typing.cast()
+  "TC007",	  # No need to add quotes to type alias
+  "E501",     # Line length handle by Ruff
+  "E731",     # Do not assign a lambda expression to a variable
+]
