@@ -22,7 +22,12 @@ fix:
 	@echo Fix with Ruff...
 	$ uv run ruff check --fix .
 
-# ------------------ Pre-commit ---------------------
+# ------------------- Pre-commit -------------------
 precommit:
 	@echo Run pre-commit...
 	$ uv run pre-commit run --all-files
+
+# ---------------------- Test ----------------------
+test:
+	@echo Running tests with pytest...
+	uv run pytest -v
