@@ -9,6 +9,7 @@ dependencies = []
 [dependency-groups]
 dev = [
   "pre-commit>=4.4.0",
+  "pytest>=9.0.1",
   "ruff>=0.14.5",
 ]
 
@@ -67,9 +68,19 @@ ignore = [
   "ANN002",   # No need to force type on args
   "ANN003",   # No need to force type on kwargs
   "ISC001",   # Disabled to avoid conflicts with the formatter
+  "PT006",    # Allow flexible usage of @pytest.mark.parametrize arguments
+  "PT007",    # Allow lambda usage in mocks/patches (useful in concise tests)
+  "PT008",    # Allow multiple statements inside pytest.raises blocks
+  "PT018",    # Allow composite assertions (assert A and B) for compact tests
+  "PT019",    # Allow fixture param usage without enforcing strict typing constraints
   "SIM105",   # Explicitly prefer "try-except-pass" blocks over "contextlib.suppress"
   "TC006",	  # No need to add quotes to type expression in typing.cast()
   "TC007",	  # No need to add quotes to type alias
   "E501",     # Line length handle by Ruff
   "E731",     # Do not assign a lambda expression to a variable
 ]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-q"

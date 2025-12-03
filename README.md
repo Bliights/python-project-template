@@ -1,11 +1,11 @@
 # Python Project Template
-***
 
 A modern, clean, and efficient boilerplate for starting new Python projects with reliable tooling and best practices baked in from the start. This template integrates:
 
 - ⚡ ```uv``` for fast dependency management
 - 🧹 ```Ruff``` for linting and formatting
 - 🪝 ```pre-commit``` hooks for automated code quality and automatic requirements generation
+- 📋 ```pytest``` for testing
 - 🧰 A full set of ```Makefile``` commands for easy project workflow
 
 and ensures:
@@ -16,24 +16,20 @@ and ensures:
 - 🧑‍💻 You focus on building — not configuring tools
 
 ## Getting Started
-***
 
 ### 1. Install dependencies
-***
 Install all required libraries in a virtual environment and enable ```pre-commit``` hooks:
 ```bash
 $ make install
 ```
 
 ### 2. Managing Dependencies
-***
 Add Python packages with ```uv```, and when you want to upgrade everything (lockfile + env) you can just run this command:
 ```bash
 $ make upgrade
 ```
 
 ### 3. Code quality
-***
 To validate and enforce code quality (linting, formatting, etc.) across the entire project, run all ```pre-commit``` checks:
 ```bash
 $ make precommit
@@ -45,3 +41,9 @@ $ make format   # Format code with Ruff
 $ make fix      # Auto-fix issues detected by Ruff
 ```
 Together, these commands ensure your codebase remains clean, consistent, and free of common errors, while enforcing project-wide standards.
+
+### 4. Running Tests
+Execute the entire test suite using ```pytest```:
+```bash
+$ make test
+```
