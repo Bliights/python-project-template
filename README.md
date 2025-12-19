@@ -32,7 +32,7 @@ $ make upgrade
 ### 3. Code quality
 To validate and enforce code quality (linting, formatting, etc.) across the entire project, run all ```pre-commit``` checks:
 ```bash
-$ make precommit
+$ make pre-commit
 ```
 You can also use the dedicated ```Makefile``` commands for more granular control:
 ```bash

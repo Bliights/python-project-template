@@ -23,7 +23,7 @@ fix:
 	$ uv run ruff check --fix .
 
 # ------------------- Pre-commit -------------------
-precommit:
+pre-commit:
 	@echo Run pre-commit...
 	$ uv run pre-commit run --all-files
 
@@ -31,3 +31,7 @@ precommit:
 test:
 	@echo Running tests with pytest...
 	uv run pytest -v
+
+# -------------------- Scripts ---------------------
+test-script:
+	uv run python -m src.scripts.test
