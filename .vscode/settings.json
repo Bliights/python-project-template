@@ -1,18 +1,29 @@
-{  
-  // Active Ruff
+{
+  // Enable Ruff
   "ruff.enable": true,
 
-  // Format le code à chaque sauvegarde
-  "editor.formatOnSave": true,
-
+  // Path to Ruff configuration file
   "ruff.configuration": "${workspaceFolder}/pyproject.toml",
+
+  // Python interpreter used by Ruff
   "ruff.interpreter": [
     "${workspaceFolder}/.venv/Scripts/python.exe"
   ],
-  // Applique les corrections automatiques (comme pre-commit --fix)
-  "editor.codeActionsOnSave": {
-    "source.fixAll": "always"
+
+  // Format Python code on save
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit",
+      "source.organizeImports": "explicit"
+    },
   },
-  // Utilise ta config du projet
-  "ruff.organizeImports": true,
+
+  // Notebook formatting on save
+  "notebook.formatOnSave.enabled": true,
+  "notebook.codeActionsOnSave": {
+    "notebook.source.fixAll": "explicit",
+    "notebook.source.organizeImports": "explicit"
+  },
 }
