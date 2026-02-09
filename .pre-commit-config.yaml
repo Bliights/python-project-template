@@ -1,7 +1,7 @@
 fail_fast: true
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.14.2
+    rev: v0.15.0
     hooks:
       - id: ruff
         name: "Ruff linter"
@@ -18,7 +18,7 @@ repos:
         files: \.(py|ipynb)$
 
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.9.6
+    rev: 0.10.0
     hooks:
       - id: uv-lock
         name: "Ensure uv.lock is up to date"
