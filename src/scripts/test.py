@@ -2,10 +2,15 @@ import logging
 
 from project_name.example import add
 
-from .logging_config import setup_logging
+from .logging_config import disable_logging, setup_logging
 
 logger = logging.getLogger(__name__)
 setup_logging(logging.DEBUG)
+
+
+@disable_logging(logging.INFO)
+def test() -> None:
+    logger.info("test")
 
 
 if __name__ == "__main__":
