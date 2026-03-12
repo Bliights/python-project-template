@@ -1,0 +1,18 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        
+        // --- Python: debug active file, step into libraries & stdlib ---
+        {
+            "name": "Python: Active File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            },
+            "justMyCode": false,     // allow stepping into site-packages
+        },
+    ]
+}
