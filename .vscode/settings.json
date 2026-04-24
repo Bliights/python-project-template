@@ -17,7 +17,7 @@
     "editor.codeActionsOnSave": {
       "source.fixAll": "explicit",
       "source.organizeImports": "explicit"
-    },
+    }
   },
 
   // Notebook formatting on save
@@ -25,5 +25,5 @@
   "notebook.codeActionsOnSave": {
     "notebook.source.fixAll": "explicit",
     "notebook.source.organizeImports": "explicit"
-  },
+  }
 }

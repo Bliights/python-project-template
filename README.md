@@ -47,3 +47,13 @@ Execute the entire test suite using ```pytest```:
 ```bash
 $ make test
 ```
+
+### 5. Reusing the project as a package
+If you want to use the project as a package in another project, you can install it directly from the repository using its URL. For example, using this repository:
+```bash
+$ uv add git+https://github.com/Bliights/python-project-template
+```
+or
+```bash
+$ pip install git+https://github.com/Bliights/python-project-template
+```
