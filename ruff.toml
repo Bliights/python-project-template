@@ -1,0 +1,84 @@
+line-length = 120
+indent-width = 4
+respect-gitignore = true
+
+[format]
+quote-style = "double"
+indent-style = "space"
+docstring-code-format = true
+skip-magic-trailing-comma = false
+
+[lint]
+select = [
+    "ANN", # Force type annotation
+    "A",   # Check naming is compatible with python
+    "C4",  # Enforces Pythonic comprehensions (list, dict, set) and forbids inefficient map()/filter() or redundant collection calls
+    "FA",  # Enforces the "from __future__ import annotations"
+    "ISC", # Enforces a consistent style for implicit string concatenation
+    "PIE", # Simplifies common Python constructs
+    "PT",  # Enforces consistent conventions and best practices for writing clean and reliable pytest test
+    "Q",   # Enforces a strict, consistent quote style
+    "RSE", # Removes unnecessary parentheses when raising an exception without arguments
+    "RET", # Enforces explicit returns
+    "SIM", # Simplifies complex expressions
+    # "SLOT", # Enforces the use of "__slots__" on subclasses of immutable built-ins (str, tuple) to reduce memory consumption and potentially improve attribute access speed
+    "TC",   # Optimizes runtime performance by enforcing that imports used only for type annotations are moved into a "if typing.TYPE_CHECKING:" block
+    "ARG",  # Check for unused arguments
+    "FLY",  # Check for str.join calls that can be replaced with f-strings
+    "I",    # Enforces import sorting and grouping according to standard Python
+    "N",    # Enforces all standard PEP 8 naming conventions
+    "PERF", # Enforces rules to prevent common Python performance pitfalls
+    "E",
+    "W",    # Enforces adherence to the PEP 8
+    "D",    # Enforces docstrings
+    "F",    # Activates all Pyflakes rules
+    "PLC",  # Enforces Pylint's Convention rules for best practices
+    "UP",   # Enforces modern Python syntax
+
+    "B006",   # No mutable data structures for argument defaults
+    "B007",   # Check unused variable in loop
+    "B008",   # Checks for function calls in default function arguments
+    "B012",   # Checks for break, continue, and return statements in finally blocks.
+    "B015",   # Check for useless comparison
+    "B018",   # Found useless expression
+    "B024",   # Checks for abstract base classes that have no abstract methods
+    "FIX001", # Checks for generic fixme comments
+    "ICN001", # Enforces consistent import aliases  
+    "LOG001", # Requires using logging.getLogger() instead of direct Logger instantiation
+    "LOG002", # Enforces using __name__ with logging.getLogger() for proper logger hierarchy 
+    "TID252", # Prefer absolute imports over relative imports from parent modules	
+]
+
+ignore = [
+    "ANN002", # No need to force type on args
+    "ANN003", # No need to force type on kwargs
+    "ISC001", # Disabled to avoid conflicts with the formatter
+    "PT006",  # Allow flexible usage of @pytest.mark.parametrize arguments
+    "PT007",  # Allow lambda usage in mocks/patches (useful in concise tests)
+    "PT008",  # Allow multiple statements inside pytest.raises blocks
+    "PT018",  # Allow composite assertions (assert A and B) for compact tests
+    "PT019",  # Allow fixture param usage without enforcing strict typing constraints
+    "SIM105", # Explicitly prefer "try-except-pass" blocks over "contextlib.suppress"
+    "TC006",  # No need to add quotes to type expression in typing.cast()
+    "TC007",  # No need to add quotes to type alias
+    "E501",   # Line length handle by Ruff
+    "E731",   # Do not assign a lambda expression to a variable
+    "D100",   # Don't need docstrings for public modules
+    "D104",   # Don't need docstrings for public packages
+    "D107",   # Don't need docstrings for every init method
+    "D205",   # Don't need a blank line between the summary and description, as I prefer single-block docstrings
+]
+
+[lint.pydocstyle]
+convention = "numpy"
+
+[lint.per-file-ignores]
+"tests/**/*.py" = [
+    "D100", # Don't need module docstrings in tests
+    "D101", # Don't need class docstrings in tests
+    "D102", # Don't need method docstrings in tests
+    "D103", # Don't need function docstrings in tests
+    "D104", # Don't need package docstrings in tests
+    "D105", # Don't need magic method docstrings in tests
+    "D106", # Don't need nested class docstrings in tests
+]

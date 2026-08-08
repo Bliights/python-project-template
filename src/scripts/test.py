@@ -9,6 +9,7 @@ setup_logging(logging.DEBUG)
 
 @disable_logging(logging.INFO)
 def test() -> None:
+    """Test the disable logging decorator."""
     logger.info("test")
 
 

@@ -1,27 +1,49 @@
 fail_fast: true
+
+default_install_hook_types:
+  - pre-commit
+  - pre-push
+
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.11
+    rev: v0.16.2
     hooks:
       - id: ruff
         name: "Ruff linter"
-        args: [
-          "--fix",
-          "--exit-non-zero-on-fix",
-          "--config=pyproject.toml",
-        ]
+        args: ["--fix", "--exit-non-zero-on-fix"]
         files: \.(py|ipynb)$
 
       - id: ruff-format
         name: "Ruff formatter"
-        args: [--config=pyproject.toml]
+        files: \.(py|ipynb)$
+
+  - repo: https://github.com/astral-sh/ty-pre-commit
+    rev: v0.0.69
+    hooks:
+      - id: ty
+        name: "Ty type checking"
         files: \.(py|ipynb)$
 
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.11.7
+    rev: 0.12.3
     hooks:
       - id: uv-lock
         name: "Ensure uv.lock is up to date"
 
       - id: uv-export
-        name: "Create the requirements.txt file"
+        name: "Generate the requirements.txt file"
+        stages: [pre-push]
+
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.0
+    hooks:
+      - id: gitleaks
+        name: "Detect secrets"
+
+  - repo: local
+    hooks:
+      - id: pytest
+        name: "Run test suite"
+        entry: make test
+        language: system
+        stages: [pre-push]

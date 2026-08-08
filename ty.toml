@@ -1,0 +1,12 @@
+[rules]
+blanket-ignore-comment = "error"
+missing-override-decorator = "error"
+
+[analysis]
+respect-type-ignore-comments = false
+
+[src]
+include = [
+    "src",
+    "tests",
+]

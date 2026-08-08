@@ -1,9 +1,18 @@
 import logging
+from functools import wraps
+from typing import TYPE_CHECKING, ParamSpec, TypeVar, override
 
+if TYPE_CHECKING:
+    from collections.abc import Callable
+
+P = ParamSpec("P")
+R = TypeVar("R")
 LOG_FORMAT = "[%(levelname)s] : %(message)s"
 
 
 class ColorFormatter(logging.Formatter):
+    """Color formatter class."""
+
     COLORS = {
         logging.DEBUG: "\033[92m",  # Green
         logging.INFO: "\033[96m",  # Cyan
@@ -13,9 +22,10 @@ class ColorFormatter(logging.Formatter):
     }
     RESET = "\033[0m"
 
+    @override
     def format(self, record: logging.LogRecord) -> str:
         """
-        Format a log record by applying a color based on its severity level
+        Format a log record by applying a color based on its severity level.
 
         Parameters
         ----------
@@ -34,7 +44,7 @@ class ColorFormatter(logging.Formatter):
 
 def setup_logging(level: int = logging.INFO) -> None:
     """
-    Configure the root logger for the entire application
+    Configure the root logger for the entire application.
 
     Parameters
     ----------
@@ -50,24 +60,23 @@ def setup_logging(level: int = logging.INFO) -> None:
     root_logger.addHandler(handler)
 
 
-def disable_logging(level: int = logging.INFO) -> object:
-    """
-    Decorator that temporarily disables logging during the execution
-    of the decorated function
+def disable_logging(level: int = logging.INFO) -> Callable[[Callable[P, R]], Callable[P, R]]:
+    """Temporarily disable logging during execution of a decorated function.
 
     Parameters
     ----------
     level : int, optional
-        Logging level to disable
+        Logging level to disable.
 
     Returns
     -------
-    object
-        A decorated function with logging temporarily disabled
+    Callable[[Callable[P, R]], Callable[P, R]]
+        Decorator preserving the decorated function's signature.
     """
 
-    def decorator(func: object) -> object:
-        def wrapper(*args, **kwargs) -> object:
+    def decorator(func: Callable[P, R]) -> Callable[P, R]:
+        @wraps(func)
+        def wrapper(*args: P.args, **kwargs: P.kwargs) -> R:
             logging.disable(level)
             try:
                 return func(*args, **kwargs)
