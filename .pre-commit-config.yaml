@@ -21,7 +21,7 @@ repos:
     rev: v0.0.69
     hooks:
       - id: ty
-        name: "Ty type checking"
+        name: "ty type checking"
         files: \.(py|ipynb)$
 
   - repo: https://github.com/astral-sh/uv-pre-commit
