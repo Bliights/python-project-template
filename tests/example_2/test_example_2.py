@@ -9,5 +9,5 @@ def test_divide(integer_triplet: tuple[int, int, float]) -> None:
 
 
 def test_divide_by_zero() -> None:
-    with pytest.raises(ValueError, match="Cannot divide by zero"):
+    with pytest.raises(ZeroDivisionError, match="Cannot divide by zero"):
         divide(5, 0)

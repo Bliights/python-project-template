@@ -1,15 +1,12 @@
 {
   // Enable Ruff
   "ruff.enable": true,
-
   // Path to Ruff configuration file
   "ruff.configuration": "${workspaceFolder}/pyproject.toml",
-
   // Python interpreter used by Ruff
   "ruff.interpreter": [
     "${workspaceFolder}/.venv/Scripts/python.exe"
   ],
-
   // Format Python code on save
   "[python]": {
     "editor.defaultFormatter": "charliermarsh.ruff",
@@ -19,7 +16,6 @@
       "source.organizeImports": "explicit"
     }
   },
-
   // Notebook formatting on save
   "notebook.formatOnSave.enabled": true,
   "notebook.codeActionsOnSave": {

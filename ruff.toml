@@ -43,10 +43,11 @@ select = [
     "B018",   # Found useless expression
     "B024",   # Checks for abstract base classes that have no abstract methods
     "FIX001", # Checks for generic fixme comments
-    "ICN001", # Enforces consistent import aliases  
+    "ICN001", # Enforces consistent import aliases
     "LOG001", # Requires using logging.getLogger() instead of direct Logger instantiation
-    "LOG002", # Enforces using __name__ with logging.getLogger() for proper logger hierarchy 
-    "TID252", # Prefer absolute imports over relative imports from parent modules	
+    "LOG002", # Enforces using __name__ with logging.getLogger() for proper logger hierarchy
+    "TID252", # Prefer absolute imports over relative imports from parent modules
+    "D213",   # Multiline docstring start at the second line
 ]
 
 ignore = [
@@ -71,6 +72,9 @@ ignore = [
 
 [lint.pydocstyle]
 convention = "numpy"
+
+[lint.pycodestyle]
+max-doc-length = 120
 
 [lint.per-file-ignores]
 "tests/**/*.py" = [

@@ -47,4 +47,4 @@ test:
 
 # ----------------------- Scripts -----------------------
 test-script:
-	uv run python -m src.scripts.test
+	uv run python -m scripts.test

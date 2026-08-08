@@ -14,7 +14,8 @@ def multiply(a: int, b: int) -> int:
 
 
 def divide(a: int, b: int) -> float:
-    """Divide the first integer by the second.
+    """
+    Divide the first integer by the second.
 
     Raises
     ------
@@ -22,6 +23,6 @@ def divide(a: int, b: int) -> float:
         If the divisor is zero.
     """
     if b == 0:
-        raise ValueError("Cannot divide by zero")
+        raise ZeroDivisionError("Cannot divide by zero")
 
     return a / b

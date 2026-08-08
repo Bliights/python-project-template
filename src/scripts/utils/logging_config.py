@@ -1,87 +1,145 @@
+from __future__ import annotations
+
 import logging
+import os
+import sys
+from enum import IntEnum, StrEnum
 from functools import wraps
-from typing import TYPE_CHECKING, ParamSpec, TypeVar, override
+from typing import TYPE_CHECKING, ParamSpec, TypeVar
+
+import structlog
 
 if TYPE_CHECKING:
     from collections.abc import Callable
 
 P = ParamSpec("P")
 R = TypeVar("R")
-LOG_FORMAT = "[%(levelname)s] : %(message)s"
 
 
-class ColorFormatter(logging.Formatter):
-    """Color formatter class."""
+class LogFormat(StrEnum):
+    """Available log output formats."""
 
-    COLORS = {
-        logging.DEBUG: "\033[92m",  # Green
-        logging.INFO: "\033[96m",  # Cyan
-        logging.WARNING: "\033[93m",  # Yellow
-        logging.ERROR: "\033[91m",  # Red
-        logging.CRITICAL: "\033[91;1m",  # Bold red
-    }
-    RESET = "\033[0m"
-
-    @override
-    def format(self, record: logging.LogRecord) -> str:
-        """
-        Format a log record by applying a color based on its severity level.
-
-        Parameters
-        ----------
-        record : logging.LogRecord
-            The log record containing all information about the logging event
-
-        Returns
-        -------
-        str
-            The formatted log message with the color codes applied
-        """
-        color = self.COLORS.get(record.levelno, self.RESET)
-        message = super().format(record)
-        return f"{color}{message}{self.RESET}"
+    JSON = "json"
+    CONSOLE = "console"
 
 
-def setup_logging(level: int = logging.INFO) -> None:
+class LogLevel(IntEnum):
+    """Available logging levels."""
+
+    DEBUG = logging.DEBUG
+    INFO = logging.INFO
+    WARNING = logging.WARNING
+    ERROR = logging.ERROR
+    CRITICAL = logging.CRITICAL
+
+
+LIBRARY_LOG_LEVELS: dict[str, LogLevel] = {
+    "httpx": LogLevel.WARNING,
+    "urllib3": LogLevel.WARNING,
+}
+
+
+def setup_logging(level: LogLevel = LogLevel.INFO) -> None:
     """
-    Configure the root logger for the entire application.
+    Configure structured logging for the entire application.
+
+    Logs are emitted as JSON by default, suitable for observability tools.
+    Set ``LOG_FORMAT=console`` to enable human-readable Rich logs.
 
     Parameters
     ----------
-    level : str, optional
-        Minimum logging level to display
+    level : LogLevel, optional
+        Minimum logging level to emit.
     """
-    handler = logging.StreamHandler()
-    handler.setFormatter(ColorFormatter(LOG_FORMAT))
+    log_format = LogFormat(os.getenv("LOG_FORMAT", LogFormat.JSON).lower())
+    console_mode = log_format is LogFormat.CONSOLE
+
+    shared_processors = [
+        structlog.contextvars.merge_contextvars,
+        structlog.stdlib.add_logger_name,
+        structlog.stdlib.add_log_level,
+        structlog.processors.TimeStamper(fmt="iso"),
+        structlog.processors.StackInfoRenderer(),
+    ]
+
+    structlog.configure(
+        processors=[
+            structlog.stdlib.filter_by_level,
+            *shared_processors,
+            structlog.stdlib.PositionalArgumentsFormatter(),
+            structlog.stdlib.ProcessorFormatter.wrap_for_formatter,
+        ],
+        logger_factory=structlog.stdlib.LoggerFactory(),
+        wrapper_class=structlog.stdlib.BoundLogger,
+        cache_logger_on_first_use=True,
+    )
+
+    if console_mode:
+        renderer = structlog.dev.ConsoleRenderer(
+            force_colors=True,
+            exception_formatter=structlog.dev.RichTracebackFormatter(
+                show_locals=False,
+            ),
+        )
+        renderer_processors = []
+    else:
+        renderer = structlog.processors.JSONRenderer()
+        renderer_processors = [
+            structlog.processors.dict_tracebacks,
+        ]
+
+    formatter = structlog.stdlib.ProcessorFormatter(
+        foreign_pre_chain=[
+            *shared_processors,
+            structlog.stdlib.ExtraAdder(),
+        ],
+        processors=[
+            structlog.processors.UnicodeDecoder(),
+            *renderer_processors,
+            structlog.stdlib.ProcessorFormatter.remove_processors_meta,
+            renderer,
+        ],
+    )
+
+    handler = logging.StreamHandler(sys.stdout)
+    handler.setFormatter(formatter)
 
     root_logger = logging.getLogger()
-    root_logger.setLevel(level)
     root_logger.handlers.clear()
     root_logger.addHandler(handler)
+    root_logger.setLevel(level)
+
+    for logger_name, logger_level in LIBRARY_LOG_LEVELS.items():
+        logging.getLogger(logger_name).setLevel(logger_level)
 
 
-def disable_logging(level: int = logging.INFO) -> Callable[[Callable[P, R]], Callable[P, R]]:
-    """Temporarily disable logging during execution of a decorated function.
+def disable_logging(
+    level: LogLevel = LogLevel.INFO,
+) -> Callable[[Callable[P, R]], Callable[P, R]]:
+    """
+    Temporarily disable logging during execution of a decorated function.
 
     Parameters
     ----------
-    level : int, optional
+    level : LogLevel, optional
         Logging level to disable.
 
     Returns
     -------
     Callable[[Callable[P, R]], Callable[P, R]]
-        Decorator preserving the decorated function's signature.
+        Decorator that ignores log messages at or below the specified level while preserving the decorated
+        function's signature.
     """
 
     def decorator(func: Callable[P, R]) -> Callable[P, R]:
         @wraps(func)
         def wrapper(*args: P.args, **kwargs: P.kwargs) -> R:
+            previous_level = logging.root.manager.disable
             logging.disable(level)
             try:
                 return func(*args, **kwargs)
             finally:
-                logging.disable(logging.NOTSET)
+                logging.disable(previous_level)
 
         return wrapper
 
